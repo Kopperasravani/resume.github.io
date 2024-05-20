@@ -1,0 +1,219 @@
+ <!DOCTYPE html>
+ <html lang="en">
+    const express = require('express');
+const app = express();
+const PORT = process.env.PORT || 3000;
+app.use(express.json());
+const products = [
+    { id: 1, name: 'Product 1', price: 20 },
+    { id: 2, name: 'Product 2', price: 30 },
+];
+app.get('/api/products', (req, res) => {
+    res.json(products);
+});
+app.post('/api/cart', (req, res) => {
+    res.json({ message: 'Item added to cart' });
+});
+app.post('/api/orders', (req, res) => {
+    res.json({ message: 'Order processed successfully' });
+})
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
+const express = require('express');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Middleware to parse JSON bodies
+app.use(express.json());
+
+// Sample users data (this would typically be stored in a database)
+const users = [];
+
+// Endpoint for user registration
+app.post('/api/register', async (req, res) => {
+    try {
+        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+        const user = { username: req.body.username, password: hashedPassword };
+        users.push(user);
+        res.status(201).json({ message: 'User registered successfully' });
+    } catch (error) {
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+app.post('/api/login', async (req, res) => {
+    const user = users.find(user => user.username === req.body.username);
+    if (user) {
+        try {
+            if (await bcrypt.compare(req.body.password, user.password)) {
+                const token = jwt.sign({ username: user.username }, 'secretkey');
+                res.status(200).json({ token });
+            } else {
+                res.status(401).json({ error: 'Authentication failed' });
+            }
+        } catch (error) {
+            res.status(500).json({ error: 'Internal server error' });
+        }
+    } else {
+        res.status(401).json({ error: 'User not found' });
+    }
+});
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
+const express = require('express');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const app = express();
+const PORT = process.env.PORT || 3000;
+app.use(express.json());
+let products = [
+    { id: 1, name: 'Product 1', price: 20 },
+    { id: 2, name: 'Product 2', price: 30 },
+];
+let cartItems = [];
+let orders = [];
+function authenticateToken(req, res, next) {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+    if (token == null) return res.sendStatus(401);
+
+    jwt.verify(token, 'secretkey', (err, user) => {
+        if (err) return res.sendStatus(403);
+        req.user = user;
+        next();
+    });
+}
+app.get('/api/products', (req, res) => {
+    res.json(products);
+});
+
+app.get('/api/products/:id', (req, res) => {
+    const product = products.find(p => p.id === parseInt(req.params.id));
+    if (!product) return res.status(404).send('Product not found');
+    res.json(product);
+});
+
+app.post('/api/products', authenticateToken, (req, res) => {
+    const product = req.body;
+    products.push(product);
+    res.status(201).json(product);
+});
+
+app.put('/api/products/:id', authenticateToken, (req, res) => {
+    const product = products.find(p => p.id === parseInt(req.params.id));
+    if (!product) return res.status(404).send('Product not found');
+
+    product.name = req.body.name;
+    product.price = req.body.price;
+    res.json(product);
+});
+
+app.delete('/api/products/:id', authenticateToken, (req, res) => {
+    products = products.filter(p => p.id !== parseInt(req.params.id));
+    res.sendStatus(204);
+});
+app.get('/api/cart', authenticateToken, (req, res) => {
+    res.json(cartItems);
+});
+
+app.post('/api/cart', authenticateToken, (req, res) => {
+    const cartItem = req.body;
+    cartItems.push(cartItem);
+    res.status(201).json(cartItem);
+});
+
+app.delete('/api/cart/:id', authenticateToken, (req, res) => {
+    cartItems = cartItems.filter(item => item.id !== parseInt(req.params.id));
+    res.sendStatus(204);
+});
+
+// CRUD endpoints for orders
+app.get('/api/orders', authenticateToken, (req, res) => {
+    res.json(orders);
+});
+
+app.post('/api/orders', authenticateToken, (req, res) => {
+    const order = req.body;
+    orders.push(order);
+    res.status(201).json(order);
+});
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
+const express = require('express');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const { body, validationResult } = require('express-validator');
+const app = express();
+const PORT = process.env.PORT || 3000;
+app.use(express.json());
+let products = [
+    { id: 1, name: 'Product 1', price: 20 },
+    { id: 2, name: 'Product 2', price: 30 },
+];
+let cartItems = [];
+let orders = [];
+function authenticateToken(req, res, next) {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+    if (token == null) return res.sendStatus(401);
+
+    jwt.verify(token, 'secretkey', (err, user) => {
+        if (err) return res.sendStatus(403);
+        req.user = user;
+        next();
+    });
+}
+const validateRegister = [
+    body('username').notEmpty().isLength({ min: 5 }).withMessage('Username must be at least 5 characters long'),
+    body('password').notEmpty().isLength({ min: 6 }).withMessage('Password must be at least 6 characters long')
+];
+app.get('/api/products', (req, res) => {
+    res.json(products);
+});
+app.get('/api/products/:id', (req, res) => {
+    const product = products.find(p => p.id === parseInt(req.params.id));
+    if (!product) return res.status(404).send('Product not found');
+    res.json(product);
+});
+app.post('/api/products', authenticateToken, (req, res) => {
+    const product = req.body;
+    products.push(product);
+    res.status(201).json(product);
+});
+app.put('/api/products/:id', authenticateToken, (req, res) => {
+    const product = products.find(p => p.id === parseInt(req.params.id));
+    if (!product) return res.status(404).send('Product not found');
+
+    product.name = req.body.name;
+    product.price = req.body.price;
+    res.json(product);
+});
+app.delete('/api/products/:id', authenticateToken, (req, res) => {
+    const index = products.findIndex(p => p.id === parseInt(req.params.id));
+    if (index === -1) return res.status(404).send('Product not found');
+
+    products.splice(index, 1);
+    res.sendStatus(204);
+});
+app.use((err, req, res, next) => {
+    if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
+        return res.status(400).json({ error: 'Invalid JSON format' });
+    }
+    next();
+});
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ error: 'Internal server error' });
+});
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
+
+
+
+
+ </html>
