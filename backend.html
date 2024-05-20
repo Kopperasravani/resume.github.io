@@ -25,14 +25,8 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const app = express();
 const PORT = process.env.PORT || 3000;
-
-// Middleware to parse JSON bodies
 app.use(express.json());
-
-// Sample users data (this would typically be stored in a database)
-const users = [];
-
-// Endpoint for user registration
+const users = [
 app.post('/api/register', async (req, res) => {
     try {
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
@@ -129,8 +123,6 @@ app.delete('/api/cart/:id', authenticateToken, (req, res) => {
     cartItems = cartItems.filter(item => item.id !== parseInt(req.params.id));
     res.sendStatus(204);
 });
-
-// CRUD endpoints for orders
 app.get('/api/orders', authenticateToken, (req, res) => {
     res.json(orders);
 });
