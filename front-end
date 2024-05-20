@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Featured Products</title>
+    <link rel="stylesheet" href="styles.css"> 
+</head>
+<body>
+    <header>
+        <h1>Featured Products</h1>
+    </header>
+    <main>
+        <section class="featured-products">
+            <div class="product">
+                <img src="product1.jpg" alt="Product 1">
+                <h2>Product 1</h2>
+                <p>Description of Product 1</p>
+                <span class="price">$20</span>
+            </div>
+    
+        </section>
+    </main>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Listing</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file for styling -->
+</head>
+<body>
+    <header>
+        <h1>Product Listing</h1>
+    </header>
+    <main>
+        <aside class="filters">
+            <h2>Filters</h2>
+            <form>
+                <label for="category">Category:</label>
+                <select id="category">
+                    <option value="all">All Categories</option>
+                    <option value="electronics">Electronics</option>
+                    <option value="clothing">Clothing</option>
+                    <!-- Add more categories as needed -->
+                </select>
+                <label for="price-range">Price Range:</label>
+                <input type="range" id="price-range" name="price-range" min="0" max="100" value="50">
+                <span>$0</span>
+                <span>$100</span>
+            </form>
+        </aside>
+        <section class="product-list">
+            <div class="product">
+                <img src="product1.jpg" alt="Product 1">
+                <h2>Product 1</h2>
+                <p>Description of Product 1</p>
+                <span class="price">$20</span>
+            </div>
+            <!-- Repeat the above structure for other products -->
+        </section>
+    </main>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Detail</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file for styling -->
+</head>
+<body>
+    <header>
+        <h1>Product Name</h1>
+    </header>
+    <main>
+        <section class="product-detail">
+            <div class="product-images">
+                <img src="product1.jpg" alt="Product 1">
+                <!-- Add more images if needed -->
+            </div>
+            <div class="product-info">
+                <h2>Product Name</h2>
+                <p>Description of the product goes here.</p>
+                <span class="price">$20</span>
+                <button id="add-to-cart">Add to Cart</button>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file for styling -->
+</head>
+<body>
+    <header>
+        <h1>Shopping Cart</h1>
+    </header>
+    <main>
+        <section class="cart-items">
+            <div class="cart-item">
+                <img src="product1.jpg" alt="Product 1">
+                <div class="item-details">
+                    <h2>Product Name</h2>
+                    <p>Description of the product goes here.</p>
+                    <span class="price">$20</span>
+                </div>
+                <div class="item-actions">
+                    <input type="number" value="1" min="1">
+                    <button class="update">Update</button>
+                    <button class="remove">Remove</button>
+                </div>
+            </div>
+            <!-- Repeat the above structure for other cart items -->
+        </section>
+        <div class="cart-total">
+            <h2>Total:</h2>
+            <span class="total-price">$20</span>
+        </div>
+    </main>
+    
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file for styling -->
+</head>
+<body>
+    <header>
+        <h1>Checkout</h1>
+    </header>
+    <main>
+        <section class="checkout-form">
+            <h2>Shipping Information</h2>
+            <form action="process_order.php" method="POST">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                <label for="address">Address:</label>
+                <input type="text" id="address" name="address" required>
+                <label for="city">City:</label>
+                <input type="text" id="city" name="city" required>
+                <label for="zip">Zip Code:</label>
+                <input type="text" id="zip" name="zip" required>
+                <h2>Payment Information</h2>
+                <label for="card-number">Card Number:</label>
+                <input type="text" id="card-number" name="card-number" required>
+                <label for="exp-date">Expiration Date:</label>
+                <input type="text" id="exp-date" name="exp-date" placeholder="MM/YYYY" required>
+                <label for="cvv">CVV:</label>
+                <input type="text" id="cvv" name="cvv" required>
+                <button type="submit">Place Order</button>
+            </form>
+        </section>
+    </main>
+</body>
+</html>
